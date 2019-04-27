@@ -7,14 +7,9 @@
 //
 // ----------------------------------------------------------------------------
 
-#pragma once
+#include "memory_pool.h"
 
-#include <common/rune.h>
-#include <common/bytes.h>
-#include <common/defer.h>
-#include <common/result.h>
-#include <common/string_support.h>
+namespace mayhem::common {
 
-namespace mayhem {
-    
+
 }

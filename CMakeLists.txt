@@ -31,6 +31,7 @@ endif()
 
 # libfmt
 add_subdirectory(ext/fmt-5.3.0 EXCLUDE_FROM_ALL)
+include_directories(ext/fmt-5.3.0/include)
 
 # utf8proc 
 add_subdirectory(ext/utf8proc-2.2.0 EXCLUDE_FROM_ALL)
@@ -88,6 +89,9 @@ add_custom_command(
 
         COMMAND ${CMAKE_COMMAND} -E echo "copy_directory: ${PROJECT_SOURCE_DIR}/assets to ${PROJECT_BINARY_DIR}/assets"
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/assets ${PROJECT_BINARY_DIR}/assets
+
+        COMMAND ${CMAKE_COMMAND} -E echo "copy: ${PROJECT_SOURCE_DIR}/etc/client.yaml to ${PROJECT_BINARY_DIR}/bin"
+        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/etc/client.yaml ${PROJECT_BINARY_DIR}/bin
 )
 
 add_custom_target(mayhem-server-configured DEPENDS dummy-target server)
@@ -95,4 +99,9 @@ add_custom_command(
         TARGET mayhem-server-configured
         COMMAND ${CMAKE_COMMAND} -E echo  "make_directory: ${PROJECT_BINARY_DIR}/logs/server"
         COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/logs/server
+
+        COMMAND ${CMAKE_COMMAND} -E echo "copy: ${PROJECT_SOURCE_DIR}/etc/server.yaml to ${PROJECT_BINARY_DIR}/bin"
+        COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/etc/server.yaml ${PROJECT_BINARY_DIR}/bin
 )
+
+add_custom_target(mayhem-configured DEPENDS mayhem-client-configured mayhem-server-configured)
