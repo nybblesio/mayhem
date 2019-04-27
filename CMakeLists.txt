@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.11)
-project(mayhem C++)
+cmake_minimum_required(VERSION 3.14)
+project(mayhem)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -70,12 +70,17 @@ option(BUILD_SHARED_LIBS "Build Shared Libraries" ON)
 add_subdirectory(ext/yaml-cpp-0.6.2 EXCLUDE_FROM_ALL)
 include_directories(ext/yaml-cpp-0.6.2/include)
 
+# game projects
+add_subdirectory(mayhem)
+add_subdirectory(client)
+add_subdirectory(server)
+
 # dummy target used for file copies
 add_custom_target(dummy-target ALL DEPENDS custom-output)
 add_custom_command(OUTPUT custom-output COMMAND ${CMAKE_COMMAND} -E echo DEPENDS always-rebuild)
 add_custom_command(OUTPUT always-rebuild COMMAND ${CMAKE_COMMAND} -E echo)
 
-add_custom_target(mayhem-configured DEPENDS dummy-target mayhem)
+add_custom_target(mayhem-configured DEPENDS dummy-target client server)
 add_custom_command(
         TARGET mayhem-configured
         COMMAND ${CMAKE_COMMAND} -E echo  "make_directory: ${PROJECT_BINARY_DIR}/logs"
