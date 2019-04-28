@@ -1,12 +1,16 @@
 cmake_minimum_required(VERSION 3.14)
 project(mayhem)
 
-include_directories("${PROJECT_SOURCE_DIR}")
+include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR})
 
 add_library(
         ${PROJECT_NAME}
 
+        include/mayhem/game.h
+
+        log.h log.cpp
         types.h types.cpp
+        state_machine.h state_machine.cpp
 
         common/bytes.h
         common/defer.h
@@ -15,9 +19,14 @@ add_library(
         common/memory_pool.h common/memory_pool.cpp
         common/string_support.h common/string_support.cpp
         common/term_stream_builder.h common/term_stream_builder.cpp
+
+        ../ext/SDL_FontCache/SDL_FontCache.c ../ext/SDL_FontCache/SDL_FontCache.h
 )
 target_link_libraries(
         ${PROJECT_NAME}
         utf8proc
         fmt-header-only
+        SDL2_ttf
+        SDL2-static
+        fmod
 )

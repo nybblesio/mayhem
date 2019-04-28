@@ -49,6 +49,7 @@ include_directories(ext/SDL2-2.0.9/include)
 # sdl2_ttf
 add_subdirectory(ext/SDL2_ttf-2.0.14 EXCLUDE_FROM_ALL)
 include_directories(ext/SDL2_ttf-2.0.14)
+add_dependencies(SDL2_ttf SDL2-static)
 
 # SDL_FontCache
 include_directories(ext/SDL_FontCache)
@@ -70,6 +71,17 @@ include_directories(${mstch_INCLUDE_DIR})
 option(BUILD_SHARED_LIBS "Build Shared Libraries" ON)
 add_subdirectory(ext/yaml-cpp-0.6.2 EXCLUDE_FROM_ALL)
 include_directories(ext/yaml-cpp-0.6.2/include)
+
+# fmod
+if (APPLE AND UNIX)
+    include_directories(ext/fmod-2.0.0/macos/core/inc)
+    link_directories(ext/fmod-2.0.0/macos/core/lib)
+elseif (UNIX)
+    include_directories(ext/fmod-2.0.0/linux/core/inc)
+    link_directories(ext/fmod-2.0.0/linux/core/lib)
+elseif (WIN32)
+else ()
+endif()
 
 # game projects
 add_subdirectory(mayhem)
