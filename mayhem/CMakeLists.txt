@@ -10,6 +10,7 @@ add_library(
 
         log.h log.cpp
         types.h types.cpp
+        video_system.h video_system.cpp
         state_machine.h state_machine.cpp
 
         common/bytes.h
