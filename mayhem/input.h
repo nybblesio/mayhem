@@ -10,6 +10,7 @@
 #pragma once
 
 #include <cstdint>
+#include <SDL_mouse.h>
 #include <common/result.h>
 #include <SDL_gamecontroller.h>
 
@@ -20,6 +21,23 @@ namespace mayhem {
     bool key_pressed(uint32_t code);
 
     bool key_init(common::result& r);
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    enum class mouse_button_t : int8_t {
+        left,
+        right,
+    };
+
+    struct mouse_position_t {
+        int32_t x, y;
+    };
+
+    mouse_position_t mouse_position();
+
+    bool mouse_button(mouse_button_t button);
+
+    bool mouse_button_pressed(mouse_button_t button);
 
     ///////////////////////////////////////////////////////////////////////////
 

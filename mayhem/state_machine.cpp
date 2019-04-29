@@ -52,6 +52,10 @@ namespace mayhem {
         return _states.top();
     }
 
+    std::size_t state_machine::depth() const {
+        return _states.size();
+    }
+
     state* state_machine::find_state(uint32_t type) {
         auto it = _storage.find(type);
         if (it == std::end(_storage))

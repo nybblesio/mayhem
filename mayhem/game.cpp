@@ -11,6 +11,7 @@
 #include "game.h"
 #include "timer.h"
 #include "boot_state.h"
+#include "editor_state.h"
 
 namespace mayhem {
 
@@ -38,9 +39,19 @@ namespace mayhem {
             game.ticks = SDL_GetTicks();
 
             if (key_pressed(SDL_SCANCODE_ESCAPE)) {
-                SDL_Event evt {};
-                evt.type = SDL_EventType::SDL_QUIT;
-                SDL_PushEvent(&evt);
+                if (s_machine.depth() == 1) {
+                    SDL_Event evt{};
+                    evt.type = SDL_EventType::SDL_QUIT;
+                    SDL_PushEvent(&evt);
+                } else {
+                    if (!s_machine.pop(r, game))
+                        return false;
+                }
+            }
+
+            if (key_pressed(SDL_SCANCODE_F1)) {
+                if (!s_machine.push(r, game, editor_state::type))
+                    return false;
             }
 
             if (!sound_update(r, game.sound))
@@ -135,6 +146,9 @@ namespace mayhem {
             return false;
 
         if (!s_machine.register_state<boot_state>(boot_state::type))
+            return false;
+
+        if (!s_machine.register_state<editor_state>(editor_state::type))
             return false;
 
         if (!s_machine.push(r, game, boot_state::type))

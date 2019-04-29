@@ -7,6 +7,7 @@
 //
 // ----------------------------------------------------------------------------
 
+#include <SDL_events.h>
 #include <SDL_keyboard.h>
 #include "input.h"
 
@@ -40,6 +41,68 @@ namespace mayhem {
         if (s_keyboard_state == nullptr)
             s_keyboard_state = SDL_GetKeyboardState(nullptr);
         return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    static bool s_mouse_button_state[2];
+
+    mouse_position_t mouse_position() {
+        mouse_position_t pos{};
+        SDL_PumpEvents();
+        SDL_GetMouseState(&pos.x, &pos.y);
+        return pos;
+    }
+
+    bool mouse_button(mouse_button_t button) {
+        SDL_PumpEvents();
+
+        auto state = SDL_GetMouseState(nullptr, nullptr);
+
+        bool pressed;
+        switch (button) {
+            case mouse_button_t::left: {
+                pressed = (state & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
+                break;
+            }
+            case mouse_button_t::right: {
+                pressed = (state & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
+                break;
+            }
+        }
+
+        return pressed;
+    }
+
+    bool mouse_button_pressed(mouse_button_t button) {
+        SDL_PumpEvents();
+
+        auto state = SDL_GetMouseState(nullptr, nullptr);
+
+        bool pressed;
+        switch (button) {
+            case mouse_button_t::left: {
+                pressed = (state & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
+                break;
+            }
+            case mouse_button_t::right: {
+                pressed = (state & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
+                break;
+            }
+        }
+        auto button_index = static_cast<size_t>(button);
+        if (pressed) {
+            if (!s_mouse_button_state[button_index]) {
+                s_mouse_button_state[button_index] = true;
+            }
+        } else {
+            if (s_mouse_button_state[button_index]) {
+                s_mouse_button_state[button_index] = false;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////////////

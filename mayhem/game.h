@@ -44,6 +44,7 @@ namespace mayhem {
         joystick_t joystick{};
         game_config_t config{};
         sound_system_t sound{};
+        bool in_editor = false;
         entt::registry registry{};
     };
 

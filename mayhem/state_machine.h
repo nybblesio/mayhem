@@ -49,6 +49,8 @@ namespace mayhem {
 
         state* top() const;
 
+        std::size_t depth() const;
+
         state* find_state(uint32_t type);
 
         bool pop(common::result& r, game_t& game);
