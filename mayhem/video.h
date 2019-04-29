@@ -253,6 +253,32 @@ namespace mayhem {
         int32_t x,
         size_t size = {});
 
+    bool video_queue_hline(
+        common::result& r,
+        game_t& game,
+        color_t color,
+        int32_t y,
+        int32_t x,
+        int32_t w);
+
+    bool video_queue_vline(
+        common::result& r,
+        game_t& game,
+        color_t color,
+        int32_t y,
+        int32_t x,
+        int32_t h);
+
+    bool video_queue_box(
+        common::result& r,
+        game_t& game,
+        color_t color,
+        int32_t y,
+        int32_t x,
+        int32_t w,
+        int32_t h,
+        bool fill = false);
+
     bool video_init(common::result& r, game_t& game);
 
     bool video_update(common::result& r, game_t& game);

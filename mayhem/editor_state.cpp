@@ -25,6 +25,8 @@ namespace mayhem {
     }
 
     bool editor_state::update(common::result& r, game_t& game) {
+        video_queue_box(r, game, color_t{0x20, 0xd6, 0xc7}, 100, 100, 256, 64, true);
+        video_queue_box(r, game, color_t{0x8b, 0x93, 0xaf}, 0, 0, 512, 480, true);
         return true;
     }
 

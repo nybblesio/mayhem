@@ -432,6 +432,27 @@ namespace mayhem {
             game.registry.destroy(entity);
         }
 
+        auto hline_view = game.registry.view<hline_t>();
+        for (auto entity : hline_view) {
+            auto& hline = hline_view.get(entity);
+            video_draw_hline(game, hline);
+            game.registry.destroy(entity);
+        }
+
+        auto vline_view = game.registry.view<vline_t>();
+        for (auto entity : vline_view) {
+            auto& vline = vline_view.get(entity);
+            video_draw_vline(game, vline);
+            game.registry.destroy(entity);
+        }
+
+        auto box_view = game.registry.view<box_t>();
+        for (auto entity : box_view) {
+            auto& box = box_view.get(entity);
+            video_draw_rect(game, box);
+            game.registry.destroy(entity);
+        }
+
         SDL_UpdateTexture(
             game.window.texture,
             nullptr,
@@ -523,6 +544,56 @@ namespace mayhem {
             blit.dest_rect = rect_t{{x, y}, size};
         else
             blit.dest_rect = rect_t{{x, y}, {image->size.w, image->size.h}};
+
+        return true;
+    }
+
+    bool video_queue_hline(
+            common::result& r,
+            game_t& game,
+            color_t color,
+            int32_t y,
+            int32_t x,
+            int32_t w) {
+        auto entity = game.registry.create();
+        auto& hline = game.registry.assign<hline_t>(entity);
+        hline.w = w;
+        hline.color = color;
+        hline.pos = point_t{x, y};
+
+        return true;
+    }
+
+    bool video_queue_vline(
+            common::result& r,
+            game_t& game,
+            color_t color,
+            int32_t y,
+            int32_t x,
+            int32_t h) {
+        auto entity = game.registry.create();
+        auto& vline = game.registry.assign<vline_t>(entity);
+        vline.h = h;
+        vline.color = color;
+        vline.pos = point_t{x, y};
+
+        return true;
+    }
+
+    bool video_queue_box(
+            common::result& r,
+            game_t& game,
+            color_t color,
+            int32_t y,
+            int32_t x,
+            int32_t w,
+            int32_t h,
+            bool fill) {
+        auto entity = game.registry.create();
+        auto& box = game.registry.assign<box_t>(entity);
+        box.fill = fill;
+        box.color = color;
+        box.bounds = rect_t{x, y, w, h};
 
         return true;
     }
