@@ -14,7 +14,6 @@
 #include <string>
 #include <memory>
 #include <cstdint>
-#include <filesystem>
 #include <unordered_map>
 #include <common/result.h>
 
@@ -87,17 +86,17 @@ namespace mayhem {
 
     class bank_file {
     public:
-        explicit bank_file(std::filesystem::path path);
+        explicit bank_file(std::string path);
 
         bool empty() const;
 
         size_t size() const;
 
-        const std::filesystem::path& path() const;
+        std::string_view path() const;
 
     private:
         bank_list_t _banks{};
-        std::filesystem::path _path;
+        std::string _path;
     };
 
     ///////////////////////////////////////////////////////////////////////////
@@ -112,11 +111,11 @@ namespace mayhem {
 
         bool save(common::result& r, bank_file* file);
 
-        bool exists(const std::filesystem::path& path);
+        bool exists(const std::string& path);
 
-        bank_file* find(const std::filesystem::path& path);
+        bank_file* find(const std::string& path);
 
-        bank_file* load(common::result& r, const std::filesystem::path& path);
+        bank_file* load(common::result& r, const std::string& path);
 
     private:
         std::unordered_map<std::string, bank_file> _files{};

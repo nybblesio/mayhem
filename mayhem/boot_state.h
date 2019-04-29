@@ -25,6 +25,8 @@ namespace mayhem {
             return "boot"sv;
         }
 
+        bool update(common::result& r, game_t& game) override;
+
     private:
     };
 

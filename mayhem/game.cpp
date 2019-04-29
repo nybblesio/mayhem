@@ -27,6 +27,8 @@ namespace mayhem {
     ///////////////////////////////////////////////////////////////////////////
 
     bool game_run(common::result& r, game_t& game) {
+        const color_t white = {.r = 0xff, .g = 0xff, .b = 0xff, .a = 0xff};
+
         uint16_t fps = 0;
         uint16_t frame_count = 0;
         uint32_t last_time = SDL_GetTicks();
@@ -51,7 +53,16 @@ namespace mayhem {
                 return false;
 
             if (game.config.show_fps) {
-                //video_text(white, 2, 2, "FPS: %d", fps);
+                if (!video_queue_text(
+                        r,
+                        game,
+                        bank_id_t{0xff, 0},
+                        white,
+                        2,
+                        2,
+                        fmt::format("FPS:{:03}", fps))) {
+                    return false;
+                }
             }
 
             if (!video_update(r, game))

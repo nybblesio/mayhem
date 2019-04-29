@@ -60,7 +60,7 @@ namespace mayhem {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    bank_file::bank_file(std::filesystem::path path) : _path(std::move(path)) {
+    bank_file::bank_file(std::string path) : _path(std::move(path)) {
     }
 
     bool bank_file::empty() const {
@@ -71,8 +71,8 @@ namespace mayhem {
         return _banks.size();
     }
 
-    const std::filesystem::path& bank_file::path() const {
-        return _path;
+    std::string_view bank_file::path() const {
+        return std::string_view(_path);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -84,22 +84,22 @@ namespace mayhem {
         return _files.empty();
     }
 
-    bool bank_manager::save(common::result& r, bank_file* file) {
-        return false;
-    }
-
-    bool bank_manager::exists(const std::filesystem::path& path) {
+    bool bank_manager::exists(const std::string& path) {
         return _files.count(path) > 0;
     }
 
-    bank_file* bank_manager::find(const std::filesystem::path& path) {
+    bank_file* bank_manager::find(const std::string& path) {
         auto it = _files.find(path);
         if (it == std::end(_files))
             return nullptr;
         return &it->second;
     }
 
-    bank_file* bank_manager::load(common::result& r, const std::filesystem::path& path) {
+    bool bank_manager::save(common::result& r, bank_file* file) {
+        return false;
+    }
+
+    bank_file* bank_manager::load(common::result& r, const std::string& path) {
         return nullptr;
     }
 
