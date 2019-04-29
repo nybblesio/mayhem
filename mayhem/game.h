@@ -13,9 +13,11 @@
 #include <common/result.h>
 #include <entt/entity/registry.hpp>
 #include "log.h"
+#include "video.h"
 #include "input.h"
 #include "sound.h"
 #include "window.h"
+#include "bank_manager.h"
 #include "state_machine.h"
 
 namespace mayhem {
@@ -36,7 +38,9 @@ namespace mayhem {
 
     struct game_t {
         uint32_t ticks;
+        video_t video{};
         window_t window{};
+        bank_manager banks{};
         joystick_t joystick{};
         game_config_t config{};
         sound_system_t sound{};

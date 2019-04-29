@@ -17,6 +17,7 @@ add_library(
         timer.h timer.cpp
         window.h window.cpp
         boot_state.h boot_state.cpp
+        bank_manager.h bank_manager.cpp
         state_machine.h state_machine.cpp
 
         common/bytes.h

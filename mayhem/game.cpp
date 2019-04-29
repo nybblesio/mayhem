@@ -54,7 +54,8 @@ namespace mayhem {
                 //video_text(white, 2, 2, "FPS: %d", fps);
             }
 
-            // video update
+            if (!video_update(r, game))
+                return false;
 
             uint32_t frame_duration = SDL_GetTicks() - game.ticks;
 
@@ -106,6 +107,22 @@ namespace mayhem {
         if (!window_create(r, game.window, game.config.window_x, game.config.window_y))
             return false;
 
+        game.video.bg_size.w = 32;
+        game.video.bg_size.h = 32;
+
+        game.video.tile_size.w = 32;
+        game.video.tile_size.h = 32;
+
+        game.video.max_sprites = 256;
+        game.video.sprite_size.w = 16;
+        game.video.sprite_size.h = 16;
+
+        game.video.max_bg_size.w = 64;
+        game.video.max_bg_size.h = 64;
+
+        if (!video_init(r, game))
+            return false;
+
         if (!s_machine.register_state<boot_state>(boot_state::type))
             return false;
 
@@ -121,6 +138,10 @@ namespace mayhem {
         }
 
         if (!joystick_close(r, game.joystick)) {
+
+        }
+
+        if (!video_shutdown(r, game)) {
 
         }
 
