@@ -23,19 +23,19 @@ namespace mayhem {
         return _machine;
     }
 
-    bool state::enter(common::result& r) {
-        return true;
-    }
-
-    bool state::leave(common::result& r) {
-        return true;
-    }
-
     std::string_view state::name() const {
         return "default"sv;
     }
 
-    bool state::update(common::result& r, uint32_t ticks) {
+    bool state::enter(common::result& r, game_t& game) {
+        return true;
+    }
+
+    bool state::leave(common::result& r, game_t& game) {
+        return true;
+    }
+
+    bool state::update(common::result& r, game_t& game) {
         return true;
     }
 
@@ -52,14 +52,21 @@ namespace mayhem {
         return _states.top();
     }
 
-    bool state_machine::pop(common::result& r) {
+    state* state_machine::find_state(uint32_t type) {
+        auto it = _storage.find(type);
+        if (it == std::end(_storage))
+            return nullptr;
+        return it->second;
+    }
+
+    bool state_machine::pop(common::result& r, game_t& game) {
         if (_states.empty()) {
             r.error("G400", "the game state stack must not be empty.");
             return false;
         }
         auto top = _states.top();
         log_debug(log_category_t::app, "leave state: {}", top->name());
-        if (!top->leave(r))
+        if (!top->leave(r, game))
             return false;
         _states.pop();
         if (_states.empty()) {
@@ -68,40 +75,36 @@ namespace mayhem {
         }
         top = _states.top();
         log_debug(log_category_t::app, "enter state: {}", top->name());
-        return top->enter(r);
+        return top->enter(r, game);
     }
 
-    state* state_machine::find_state(uint32_t type) {
-        auto it = _storage.find(type);
-        if (it == std::end(_storage))
-            return nullptr;
-        return it->second;
-    }
-
-    bool state_machine::push(common::result& r, uint32_t type) {
-        auto state = find_state(type);
-        if (state == nullptr) {
-            r.error("G401", fmt::format("state not found: {}", type));
-            return false;
-        }
-
-        auto top = _states.top();
-        log_debug(log_category_t::app, "leave state: {}", top->name());
-        if (!top->leave(r))
-            return false;
-        _states.push(state);
-        log_debug(log_category_t::app, "enter state: {}", state->name());
-        return state->enter(r);
-    }
-
-    bool state_machine::update(common::result& r, uint32_t ticks) {
+    bool state_machine::update(common::result& r, game_t& game) {
         if (_states.empty()) {
             r.error("G400", "the game state stack must not be empty.");
             return false;
         }
 
         auto top = _states.top();
-        return top->update(r, ticks);
+        return top->update(r, game);
+    }
+
+    bool state_machine::push(common::result& r, game_t& game, uint32_t type) {
+        auto state = find_state(type);
+        if (state == nullptr) {
+            r.error("G401", fmt::format("state not found: {}", type));
+            return false;
+        }
+
+        if (!_states.empty()) {
+            auto top = _states.top();
+            log_debug(log_category_t::app, "leave state: {}", top->name());
+            if (!top->leave(r, game))
+                return false;
+        }
+
+        _states.push(state);
+        log_debug(log_category_t::app, "enter state: {}", state->name());
+        return state->enter(r, game);
     }
 
 }

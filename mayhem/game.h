@@ -1,0 +1,51 @@
+// ----------------------------------------------------------------------------
+//
+// Mayhem
+//
+// Copyright (C) 2019 Jeff Panici
+// All rights reserved.
+//
+// ----------------------------------------------------------------------------
+
+#pragma once
+
+#include <cstdint>
+#include <common/result.h>
+#include <entt/entity/registry.hpp>
+#include "log.h"
+#include "input.h"
+#include "sound.h"
+#include "window.h"
+#include "state_machine.h"
+
+namespace mayhem {
+
+    struct game_config_t {
+        bool show_fps = true;
+        int32_t window_x = -1;
+        int32_t window_y = -1;
+    };
+
+    bool game_config_load(common::result& r, game_config_t& config);
+
+    bool game_config_save(common::result& r, game_config_t& config);
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    struct game_t {
+        uint32_t ticks;
+        window_t window{};
+        joystick_t joystick{};
+        game_config_t config{};
+        sound_system_t sound{};
+        entt::registry registry{};
+    };
+
+    bool game_run(common::result& r, game_t& game);
+
+    bool game_init(common::result& r, game_t& game);
+
+    bool game_shutdown(common::result& r, game_t& game);
+
+}
+

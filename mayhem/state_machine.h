@@ -15,6 +15,7 @@
 
 namespace mayhem {
 
+    struct game_t;
     class state_machine;
 
     class state {
@@ -23,11 +24,11 @@ namespace mayhem {
 
         virtual std::string_view name() const;
 
-        virtual bool enter(common::result& r);
+        virtual bool enter(common::result& r, game_t& game);
 
-        virtual bool leave(common::result& r);
+        virtual bool leave(common::result& r, game_t& game);
 
-        virtual bool update(common::result& r, uint32_t ticks);
+        virtual bool update(common::result& r, game_t& game);
 
     protected:
         state_machine* machine();
@@ -40,7 +41,7 @@ namespace mayhem {
 
     class state_machine {
     public:
-        state_machine();
+        state_machine() = default;
 
         state_machine(const state_machine&) = delete;
 
@@ -48,13 +49,11 @@ namespace mayhem {
 
         state* top() const;
 
-        bool pop(common::result& r);
-
         state* find_state(uint32_t type);
 
-        bool push(common::result& r, uint32_t type);
+        bool pop(common::result& r, game_t& game);
 
-        bool update(common::result& r, uint32_t ticks);
+        bool update(common::result& r, game_t& game);
 
         template <typename T, typename... Args>
         bool register_state(uint32_t type, Args&&... args) {
@@ -66,6 +65,8 @@ namespace mayhem {
                 new T(this, std::forward<Args>(args)...)));
             return result.second;
         }
+
+        bool push(common::result& r, game_t& game, uint32_t type);
 
     private:
         std::stack<state*> _states {};

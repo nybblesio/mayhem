@@ -7,9 +7,15 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "types.h"
+#pragma once
+
+#include <cstdint>
+#include <common/result.h>
+#include "game.h"
 
 namespace mayhem {
 
+    bool timer_update(common::result& r, game_t& game);
 
 }
+

@@ -7,9 +7,12 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "types.h"
+#include "timer.h"
 
 namespace mayhem {
 
+    bool timer_update(common::result& r, game_t& game) {
+        return true;
+    }
 
 }
