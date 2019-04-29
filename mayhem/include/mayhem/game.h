@@ -15,7 +15,7 @@
 #include <sound.h>
 #include <timer.h>
 #include <window.h>
-#include <video_system.h>
+#include <video.h>
 #include <state_machine.h>
 
 #include <common/defer.h>

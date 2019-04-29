@@ -13,10 +13,10 @@ add_library(
         input.h input.cpp
         types.h types.cpp
         sound.h sound.cpp
+        video.h video.cpp
         timer.h timer.cpp
         window.h window.cpp
         boot_state.h boot_state.cpp
-        video_system.h video_system.cpp
         state_machine.h state_machine.cpp
 
         common/bytes.h

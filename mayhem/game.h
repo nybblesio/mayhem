@@ -20,6 +20,8 @@
 
 namespace mayhem {
 
+    using id = entt::registry::entity_type;
+
     struct game_config_t {
         bool show_fps = true;
         int32_t window_x = -1;

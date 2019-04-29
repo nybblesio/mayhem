@@ -7,7 +7,9 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "video_system.h"
+#include <SDL_surface.h>
+#include <SDL_FontCache.h>
+#include "video.h"
 
 namespace mayhem {
 

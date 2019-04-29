@@ -12,6 +12,7 @@
 #include <vector>
 #include <cstdint>
 #include <functional>
+#include <string_view>
 
 namespace mayhem {
 
@@ -36,6 +37,11 @@ namespace mayhem {
         uint8_t bank;
         uint16_t index;
         uint8_t palette;
+    };
+
+    struct font_t {
+        uint8_t bank;
+        uint16_t index;
     };
 
     struct sprite_t {
@@ -96,6 +102,55 @@ namespace mayhem {
         uint8_t flags;
         uint32_t next_tick;
         animation_callback_t animation_callback;
+    };
+
+    struct rect_t {
+        int32_t x;
+        int32_t y;
+        int32_t w;
+        int32_t h;
+    };
+
+    struct color_t {
+        uint8_t r;
+        uint8_t g;
+        uint8_t b;
+        uint8_t a;
+    };
+
+    struct vline_t {
+        color_t color;
+        int32_t x;
+        int32_t y;
+        int32_t h;
+    };
+
+    struct hline_t {
+        color_t color;
+        int32_t x;
+        int32_t y;
+        int32_t w;
+    };
+
+    struct box_t {
+        bool fill;
+        color_t color;
+        rect_t bounds;
+    };
+
+    struct stamp_t {
+        int32_t x;
+        int32_t y;
+        tile_t tile;
+        uint8_t flags;
+    };
+
+    struct text_t {
+        int32_t x;
+        int32_t y;
+        font_t font;
+        color_t color;
+        std::string_view data;
     };
 
 }
